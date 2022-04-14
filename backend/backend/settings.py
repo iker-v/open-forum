@@ -30,9 +30,9 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES' : (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
+#    'DEFAULT_AUTHENTICATION_CLASSES' : (
+#        'rest_framework.authentication.TokenAuthentication',
+#    ),
 #    'DEFAULT_PERMISSION_CLASSES': (
 #        'rest_framework.permissions.IsAuthenticated',
 #    )
@@ -71,7 +71,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
-    'api'
+    #'api'
+    'account',
+    'thread',
+    'post',
+    'category'
 ]
 
 MIDDLEWARE = [
@@ -85,7 +89,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTH_USER_MODEL = 'api.CustomUser'
+AUTH_USER_MODEL = 'account.CustomUser'
 
 ROOT_URLCONF = 'backend.urls'
 

@@ -1,13 +1,12 @@
 from concurrent.futures import thread
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import CustomUser, Threads, Categories, Posts
+from .models import Threads
 from django.db.models import Q
-import json
 
 @api_view(['GET'])
-def search_thread(query):
-
+def search_thread(request, query):
+    print(query)
     threads = Threads.objects.filter(
         Q(title__contains=query) &
         Q(show=True)
@@ -25,41 +24,6 @@ def thread_list(request, category):
 
     return Response(threads)
 
-@api_view(['POST'])
-def publish_reply(request):
-
-    post = Posts.objects.create(
-        user_id=request.user.id,
-        thread_id=request.data['thread_uuid'],
-        comment=request.data['comment']
-    )
-
-    post = Posts.objects.filter(id=post.id).values("user__username", "comment", "date")
-
-    return Response({'post': post})
-
-@api_view(['GET'])
-def get_comments(request, uuid):
-
-    post = Posts.objects.filter(thread_id=uuid).values("user__username", "comment", "date")
-
-    return Response(post)
-
-@api_view(['GET'])
-def get_categories(request):
-
-    categories = Categories.objects.all().values("id", "name", "desc", "image")
-
-    return Response(categories)
-
-@api_view(['POST'])
-def create_categories(request):
-
-    data = request.data
-    category = Categories.objects.create(name=data['name'], desc=data['desc'], image=data['image'])
-
-    return Response()
-    
 @api_view(['POST'])
 def create_thread(request):
     data = request.data
@@ -85,5 +49,3 @@ def get_thread(request, uuid):
 
 
     return Response({'thread': thread, 'post' : post})
-
-# Create your views here.

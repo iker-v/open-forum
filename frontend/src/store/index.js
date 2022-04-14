@@ -57,23 +57,17 @@ export default new Vuex.Store({
         setToken(state, token) {
             state.auth.token = token
         },
-        setUser(state, profile_pic, username){
+        setUser(state, username){
             state.auth.username = username
-            state.auth.profile_pic = profile_pic
+            localStorage.setItem("username", username)
         },
         removeToken(state){
+            localStorage.removeItem("token")
             state.auth.token = ''
             state.auth.isAuthenticated = false
         }
     },
     actions:{
-        getMenu(context){
-            const publicUrl = localStorage.getItem('public_token')
-            axios.get(`/get-qrmenu/${publicUrl}`)
-              .then(({data}) => {
-                  console.log(data)
-                  context.commit('addMenu', JSON.parse(data[0]['menu']))
-              })
-        }
+
     }
 })

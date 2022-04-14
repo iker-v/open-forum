@@ -6,18 +6,9 @@ export default {
         return axios.get(`/get-thread/${uuid}`)
     },
     searchThread(query){
+        console.log(query)
         return axios.get(`/search-thread/${query}`)
     },
-    publishReply(uuid, reply){
 
-        const formData = {
-            'thread_uuid': uuid,
-            'comment': reply
-        }
-
-        return axios.post(`/publish-reply`, formData)
-    },
-    getComments(uuid){
-        return axios.get(`/get-comments/${uuid}`)
-    }
+    
 }

@@ -13,8 +13,8 @@
 
 </template>
 <script>
-  import axios from 'axios'
   import CategoryCard from '../components/category/CategoryCard.vue'
+  import category from '../services/category'
 
   export default {
     components: {
@@ -27,16 +27,14 @@
       }
     },
     methods: {
-      getCategories(){
-        axios.get('/get-categories')
-        .then(({data}) => {
+      getCategoryList(){
+        category.getCategories().then(({data}) => {
           this.categories = data
         })
-        .finally(() => this.isLoading)
       }
     },
     created() {
-      this.getCategories()
+      this.getCategoryList()
     }
   }
 

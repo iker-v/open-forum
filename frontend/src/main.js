@@ -6,7 +6,7 @@ import store from './store'
 import axios from 'axios'
 import VueClickAway from "vue3-click-away";
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1'
+axios.defaults.baseURL = 'http://127.0.0.1:8000'
 
 const app = createApp(App)
 

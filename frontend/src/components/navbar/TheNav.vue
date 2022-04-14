@@ -23,8 +23,8 @@
 
 <script>
   import SearchThread from './SearchThread.vue'
-  import RegisterModal from './RegisterModal.vue'
-  import LoginModal from './LoginModal.vue'
+  import RegisterModal from '../auth/RegisterModal.vue'
+  import LoginModal from '../auth/LoginModal.vue'
   import UserDropdown from './UserDropdown.vue'
   import { mapMutations } from 'vuex'
 

@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.$store.state.auth.showRegister" className="flex justify-center bg-black bg-opacity-70 items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative opacity-100 w-auto my-6 mx-auto max-w-2xl">
+        <div v-click-away="onClickAway" className="relative opacity-100 w-auto my-6 mx-auto max-w-2xl">
             <div className="border-0 p-5 rounded-lg shadow relative flex flex-col gap-3 w-full bg-white outline-none focus:outline-none">
 
                     <div class="flex items-center justify-center" v-if="errors.length">
@@ -28,7 +28,6 @@
                         <div class="flex">
                             <button class="bg-blue-500 shadow w-full text-sm py-2 hover:bg-blue-600 text-white font-semibold rounded-lg" type="submit">Register</button>
                         </div>
-                        
                     </form>                           
             </div>
         </div>
@@ -49,6 +48,9 @@
             }
         },
         methods: {
+            onClickAway(event){
+                this.$store.commit('changeShowRegister')
+            },
             submitForm(e) {
                 auth.register(this.username, this.email, this.password).then(response => {
                     console.log(response)

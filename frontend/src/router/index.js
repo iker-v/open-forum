@@ -4,6 +4,7 @@ import ThreadView from '../views/ThreadView.vue'
 import CreateThreadView from '../views/CreateThreadView.vue'
 import SettingsView from '../views/SettingsView.vue'
 import ThreadListView from '../views/ThreadListView.vue'
+import PanelView from '../views/PanelView.vue'
 import store from '../store'
 
 const router = createRouter({
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: SettingsView,
+    },
+    {
+      path: '/panel',
+      name: 'panel',
+      component: PanelView,
     },
     {
       path: '/c/:category',

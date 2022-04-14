@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.$store.state.auth.showLogin" className="flex justify-center bg-black bg-opacity-70 items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative opacity-100 w-auto my-6 mx-auto max-w-2xl">
+        <div v-click-away="onClickAway" className="relative opacity-100 w-auto my-6 mx-auto max-w-2xl">
             <div className="border-0 p-5 rounded-lg shadow relative flex flex-col gap-3 w-full bg-white outline-none focus:outline-none">
                 <form class="flex flex-col gap-5" @submit.prevent="submitForm" >
                     <div class="flex items-center justify-center" v-if="errors.length">
@@ -38,16 +38,20 @@
                 username: '',
                 email: '',
                 password: '',
-                errors: []
+                errors: [],
             }
         },
         methods: {
+            onClickAway(event) {
+                this.$store.commit('changeShowLogin')
+            },
             submitForm(e){
                 axios.defaults.headers.common["Authorization"] = ""
                 localStorage.removeItem("token")
 
                 auth.login(this.email, this.password)
                     .then(response => {
+                        console.log(response)
                         const token = response.data.auth_token
                         this.$store.commit('setToken', token)
                         
@@ -55,7 +59,8 @@
                         axios.defaults.headers.common["Authorization"] = "Token " + token
                         localStorage.setItem("token", token)
                         axios.get('/users/me').then(({data}) => {
-                            this.$store.commit('setUser', '', data['username'])
+                            console.log(data)
+                            this.$store.commit('setUser', data['username'])
                         }).finally(() => this.$store.commit('changeShowLogin'))
                     })
                     .catch(error => {
