@@ -19,17 +19,21 @@ export default new Vuex.Store({
             password: '',
             token: '',
             isAuthenticated: false,
-        }
+        },
+        commentsList: []
     },
     mutations:{
         searchThread(state){
             state.searchThread.isSearching = true
             state.searchThread.isLoading = true
-            axios.get(`/search-thread/${searchThread.query}`)
+            axios.get(`/thread/search-thread/${searchThread.query}`)
             .then((response) => {
                 state.searchThread.result = response['threads']
             })
             .finally(() => state.searchThread.isLoading = false)
+        },
+        updateComments(state, commentsList){
+            state.commentsList = commentsList
         },
         changeSearchQuery(state, value){
             state.searchThread.query = value
@@ -46,6 +50,7 @@ export default new Vuex.Store({
         initializeStore(state){
             if (localStorage.getItem('token')) {
                 state.auth.token = localStorage.getItem('token')
+                state.auth.username = localStorage.getItem('username')
                 state.auth.isAuthenticated = true
                 axios.defaults.headers.common["Authorization"] = "Token " + state.auth.token
             } else {
@@ -56,6 +61,7 @@ export default new Vuex.Store({
         },
         setToken(state, token) {
             state.auth.token = token
+            localStorage.setItem("token", token)
         },
         setUser(state, username){
             state.auth.username = username

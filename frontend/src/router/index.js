@@ -7,6 +7,11 @@ import ThreadListView from '../views/ThreadListView.vue'
 import PanelView from '../views/PanelView.vue'
 import store from '../store'
 
+const checkAuth = (to, from, next) => {
+  if (store.state.auth.isAuthenticated) next()
+  else next({ name: 'home' })
+}
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -24,16 +29,19 @@ const router = createRouter({
       path: '/create-thread/:categoryid',
       name: 'createThread',
       component: CreateThreadView,
+      beforeEnter: checkAuth,
     },
     {
       path: '/settings',
       name: 'settings',
       component: SettingsView,
+      beforeEnter: checkAuth,
     },
     {
       path: '/panel',
       name: 'panel',
       component: PanelView,
+      beforeEnter: checkAuth,
     },
     {
       path: '/c/:category',

@@ -2,13 +2,22 @@ import axios from "axios";
 
 export default {
     getThread(uuid){
-        console.log(uuid)
-        return axios.get(`/get-thread/${uuid}`)
+        return axios.get(`/thread/get-thread/${uuid}`)
     },
     searchThread(query){
-        console.log(query)
-        return axios.get(`/search-thread/${query}`)
+        return axios.get(`/thread/search-thread/${query}`)
     },
-
+    createThread(formData){
+        return axios.post('/thread/create-thread', formData)
+    },
+    getThreadList(query){
+        return axios.get(`/thread/thread-list/${query}`)
+    },
+    upVote(query){
+        return axios.post(`/thread/up-vote/${query}`)
+    },
+    downVote(query){
+        return axios.post(`/thread/down-vote/${query}`)
+    }
     
 }

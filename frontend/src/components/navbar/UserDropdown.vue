@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <button @click="showOptions = !showOptions" class="flex gap-2 bg-gray-100 py-1.5 px-3 min-w-max w-24 rounded-lg items-center">
+        <button @click="showOptions = !showOptions" class="flex gap-2 bg-gray-100 py-1.5 px-3 text-sm lg:text-normal min-w-max w-24 rounded-lg items-center">
             <img v-if="$store.state.auth.image" src="$store.state.auth.image" class="h-6 w-6">
             {{ username }}
         </button>

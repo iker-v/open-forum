@@ -1,8 +1,11 @@
 from concurrent.futures import thread
+from turtle import down
 from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from .models import Threads
-from django.db.models import Q
+from .models import Threads, Upvotes, Downvotes
+from post.models import Posts
+from django.db.models import Q, Count, Exists, OuterRef
 
 @api_view(['GET'])
 def search_thread(request, query):
@@ -20,7 +23,23 @@ def thread_list(request, category):
     threads = Threads.objects.filter(
         Q(category_id=category),
         Q(show=True)
-    ).values("uuid", "title", "desc", "created_at", "user__username")
+    ).values(
+        "uuid",
+        "title",
+        "desc",
+        "created_at",
+        "user__username"
+    ).annotate(
+        upvote=Count('upvotes'),
+        downvote=Count('downvotes'),
+        post=Count('posts'),
+		checkup=Exists(Upvotes.objects.filter(
+            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+        ))),
+		checkdown=Exists(Downvotes.objects.filter(
+            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+        )))
+    )
 
     return Response(threads)
 
@@ -43,9 +62,65 @@ def get_thread(request, uuid):
 
     thread = Threads.objects.filter(
         Q(uuid=uuid) & Q(show=True)
-    ).values("title", "desc", "user__username", "user__date_joined")
+    ).values(
+        "uuid",
+        "title",
+        "desc",
+        "user__username", 
+        "user__date_joined",
+    ).annotate(
+        upvote=Count('upvotes'),
+        downvote=Count('downvotes'),
+		checkup=Exists(Upvotes.objects.filter(
+            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+        ))),
+		checkdown=Exists(Downvotes.objects.filter(
+            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+        )))
+    )
     
     post = Posts.objects.filter(thread_id=uuid).values("user__username", "comment", "date")
 
 
     return Response({'thread': thread, 'post' : post})
+
+@api_view(['POST'])
+def up_vote(request, uuid):
+
+    up_filter = Upvotes.objects.filter(
+        Q(thread_id=uuid) & Q(user_id=request.user.id)
+    )
+
+    if(up_filter.exists()):
+        up_filter.delete()
+    else:
+        Downvotes.objects.filter(
+            Q(thread_id=uuid) & Q(user_id=request.user.id)
+        ).delete()
+        Upvotes.objects.create(thread_id=uuid, user_id=request.user.id)
+
+    up_votes = Upvotes.objects.filter(thread_id=uuid).count()
+    down_votes = Downvotes.objects.filter(thread_id=uuid).count()
+
+    return Response({ 'up_votes' : up_votes, 'down_votes' : down_votes})
+
+@api_view(['POST'])
+def down_vote(request, uuid):
+
+    down_filter = Downvotes.objects.filter(
+        Q(thread_id=uuid) & Q(user_id=request.user.id)
+    )
+    
+    if(down_filter.exists()):
+        down_filter.delete()
+    else:
+        Upvotes.objects.filter(
+            Q(thread_id=uuid) & Q(user_id=request.user.id)
+        ).delete()
+        Downvotes.objects.create(thread_id=uuid, user_id=request.user.id)
+        
+
+    down_votes = Downvotes.objects.filter(thread_id=uuid).count()
+    up_votes = Upvotes.objects.filter(thread_id=uuid).count()
+
+    return Response({ 'up_votes' : up_votes, 'down_votes' : down_votes})

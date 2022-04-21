@@ -1,13 +1,10 @@
-export default {
-    publishReply(uuid, reply){
-        const formData = {
-            'thread_uuid': uuid,
-            'comment': reply
-        }
+import axios from "axios"
 
-        return axios.post(`/publish-reply`, formData)
+export default {
+    publishReply(formData){
+        return axios.post(`/post/publish-reply`, formData)
     },
     getComments(uuid){
-        return axios.get(`/get-comments/${uuid}`)
+        return axios.get(`/post/get-comments/${uuid}`)
     },
 }

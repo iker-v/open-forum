@@ -30,9 +30,9 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
-#    'DEFAULT_AUTHENTICATION_CLASSES' : (
-#        'rest_framework.authentication.TokenAuthentication',
-#    ),
+    'DEFAULT_AUTHENTICATION_CLASSES' : (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 #    'DEFAULT_PERMISSION_CLASSES': (
 #        'rest_framework.permissions.IsAuthenticated',
 #    )
@@ -44,7 +44,7 @@ DJOSER = {
     "SET_USERNAME_RETYPE": False,
     "SET_PASSWORD_RETYPE": False,
     "SERIALIZERS": {
-        "user_create": "api.serializers.UserCreateSerializer",  # custom serializer
+        "user_create": "account.serializers.UserCreateSerializer",  # custom serializer
         "user": "djoser.serializers.UserSerializer",
         "current_user": "djoser.serializers.UserSerializer",
         "user_delete": "djoser.serializers.UserSerializer",
@@ -69,13 +69,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
-    'corsheaders',
-    #'api'
     'account',
     'thread',
     'post',
-    'category'
+    'category',
+    'djoser',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [

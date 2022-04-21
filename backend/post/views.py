@@ -16,9 +16,9 @@ def publish_reply(request):
         comment=request.data['comment']
     )
 
-    post = Posts.objects.filter(id=post.id).values("user__username", "comment", "date")
+    post = Posts.objects.filter(thread_id=post.thread_id).values("user__username", "comment", "date")
 
-    return Response({'post': post})
+    return Response(post)
 
 @api_view(['GET'])
 def get_comments(request, uuid):

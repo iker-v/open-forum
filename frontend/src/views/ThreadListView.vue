@@ -1,7 +1,12 @@
 <template>
     <div class="flex flex-col">
         <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
+            <div class="flex bg-neutral-200 py-1.5 px-2 rounded-lg items-center gap-2">
+                <button 
+                    @click="menuTab = 0"
+                    class="font-semibold py-1.5 px-3 rounded-lg text-sm"
+                    :class="{'bg-blue-500 text-white': menuTab === 0, 'bg-white text-blue-500 border': menuTab !== 0}"
+                >All</button>
                 <button 
                     @click="menuTab = 1"
                     class="font-semibold py-1.5 px-3 rounded-lg text-sm"
@@ -40,9 +45,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { useRoute } from 'vue-router'
 import ThreadCard from '../components/thread/ThreadCard.vue'
+import thread from '../services/thread'
 
 export default {
     components: {
@@ -56,17 +61,17 @@ export default {
         }
     },
     methods: {
-        getThreadList(){
+        ThreadList(){
             const route = useRoute()
             this.category = route.params.category
-            axios.get(`/thread-list/${this.category}`)
-            .then(({data}) => {
+            thread.getThreadList(this.category).then(({data}) => {
+                console.log(data)
                 this.threadList = data
             })
         }
     },
     created() {
-        this.getThreadList()
+        this.ThreadList()
     },
 }
 

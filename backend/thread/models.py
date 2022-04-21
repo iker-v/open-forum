@@ -14,8 +14,8 @@ class Threads(models.Model):
 
 class Upvotes(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	post = models.ForeignKey(Threads, on_delete=models.CASCADE)
+	thread = models.ForeignKey(Threads, on_delete=models.CASCADE)
 
 class Downvotes(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	post = models.ForeignKey(Threads, on_delete=models.CASCADE)
+	thread = models.ForeignKey(Threads, on_delete=models.CASCADE)

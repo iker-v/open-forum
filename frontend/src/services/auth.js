@@ -8,7 +8,7 @@ export default {
             password: password
         }
 
-        return axios.post("/users/", formData)
+        return axios.post("/account/users/", formData)
     },
     login(email, password){
         const formData = {
@@ -16,6 +16,6 @@ export default {
             password: password
         }
 
-        return axios.post("/token/login/", formData)
+        return axios.post("/account/token/login/", formData)
     }
 }

@@ -11,14 +11,27 @@
                             {{error}}
                         </p>
                     </div>
-                    <h2 class="font-bold text-2xl text-center text-gray-800">Login</h2>
+                    <h2 class="flex items-center justify-center text-center font-bold text-2xl text-gray-800">
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path></svg>
+                        Login
+                    </h2>
                     <div class="flex flex-col gap-1">
                         <label class="text-sm font-semibold text-gray-800">Email</label>
-                        <input type="email" class="py-1.5 px-3 bg-gray-50 border rounded-lg" v-model="email">
+                        <input 
+                            type="email"
+                            placeholder="user@gmail.com"
+                            class="py-1.5 px-3 bg-gray-50 border rounded-lg"
+                            v-model="email"
+                        >
                     </div>
                     <div class="flex flex-col gap-1">
                         <label class="text-sm font-semibold text-gray-800">Password</label>
-                        <input type="password" class="py-1.5 px-3 bg-gray-50 border rounded-lg" v-model="password">
+                        <input
+                            type="password"
+                            placeholder="**********"
+                            class="py-1.5 px-3 bg-gray-50 border rounded-lg"
+                            v-model="password"
+                        >
                     </div>
                     <button class="py-1.5 px-3 rounded-lg bg-blue-500 hover:bg-blue-600 font-semibold text-white" type="submit">Login</button>
                 </form>                            
@@ -51,16 +64,14 @@
 
                 auth.login(this.email, this.password)
                     .then(response => {
-                        console.log(response)
                         const token = response.data.auth_token
                         this.$store.commit('setToken', token)
-                        
-                        this.$store.commit('initializeStore')
                         axios.defaults.headers.common["Authorization"] = "Token " + token
-                        localStorage.setItem("token", token)
-                        axios.get('/users/me').then(({data}) => {
-                            console.log(data)
+                        this.$store.commit('initializeStore')
+
+                        axios.get('/account/users/me').then(({data}) => {
                             this.$store.commit('setUser', data['username'])
+                            localStorage.setItem("username", data['username'])
                         }).finally(() => this.$store.commit('changeShowLogin'))
                     })
                     .catch(error => {

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import thread from '../../services/thread'
+    import post from '../../services/post'
 
     export default {
         data(){
@@ -22,9 +22,14 @@
         props: ['username'],
         methods: {
             publishComment(){
-                thread.publishReply(this.$route.params.id, this.comment).then(response => {
-                    console.log(response)
-                } )
+                const formData = {
+                    'thread_uuid': this.$route.params.id,
+                    'comment': this.comment
+                }
+                post.publishReply(formData).then(({data}) => {
+                    console.log(data)
+                    this.$store.commit('updateComments', data)
+                })
             }
         }
     }
