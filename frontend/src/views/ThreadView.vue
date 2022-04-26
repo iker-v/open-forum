@@ -42,7 +42,7 @@ export default {
 	},
     methods: {
         getThreadDetails(){
-            const uuid = this.$route.params.id
+            const uuid = this.$route.params.idthread
             this.isLoading = false
             thread.getThread(uuid).then(({data}) => {
                 const threads = data['thread'][0]

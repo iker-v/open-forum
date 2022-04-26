@@ -23,13 +23,12 @@
         methods: {
             publishComment(){
                 const formData = {
-                    'thread_uuid': this.$route.params.id,
+                    'uuid': this.$route.params.idthread,
                     'comment': this.comment
                 }
                 post.publishReply(formData).then(({data}) => {
-                    console.log(data)
                     this.$store.commit('updateComments', data)
-                })
+                }).finally(() => this.comment = '')
             }
         }
     }

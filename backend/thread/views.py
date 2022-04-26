@@ -1,6 +1,7 @@
 from concurrent.futures import thread
 from turtle import down
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from .models import Threads, Upvotes, Downvotes
@@ -34,15 +35,16 @@ def thread_list(request, category):
         downvote=Count('downvotes'),
         post=Count('posts'),
 		checkup=Exists(Upvotes.objects.filter(
-            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+            Q(user_id=request.user.id) & Q(thread_id=OuterRef('uuid')
         ))),
 		checkdown=Exists(Downvotes.objects.filter(
-            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+            Q(user_id=request.user.id) & Q(thread_id=OuterRef('uuid')
         )))
     )
 
     return Response(threads)
 
+@permission_classes(IsAuthenticated)
 @api_view(['POST'])
 def create_thread(request):
     data = request.data
@@ -72,10 +74,10 @@ def get_thread(request, uuid):
         upvote=Count('upvotes'),
         downvote=Count('downvotes'),
 		checkup=Exists(Upvotes.objects.filter(
-            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+            Q(user_id=request.user.id) & Q(thread_id=OuterRef('uuid')
         ))),
 		checkdown=Exists(Downvotes.objects.filter(
-            Q(user=request.user) & Q(thread_id=OuterRef('uuid')
+             Q(user_id=request.user.id) & Q(thread_id=OuterRef('uuid')
         )))
     )
     
@@ -84,6 +86,7 @@ def get_thread(request, uuid):
 
     return Response({'thread': thread, 'post' : post})
 
+@permission_classes(IsAuthenticated)
 @api_view(['POST'])
 def up_vote(request, uuid):
 
@@ -104,6 +107,7 @@ def up_vote(request, uuid):
 
     return Response({ 'up_votes' : up_votes, 'down_votes' : down_votes})
 
+@permission_classes(IsAuthenticated)
 @api_view(['POST'])
 def down_vote(request, uuid):
 

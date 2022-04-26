@@ -43,7 +43,7 @@ export default {
             this.thread.category = this.$route.params.categoryid
 
             thread.createThread(this.thread).then((response) => {
-                this.$router.push({ name: 'ThreadView', params: { id: response.data['thread_id'] } })
+                this.$router.push({ name: 'ThreadView', params: { idthread: response.data['thread_id'] } })
             })
         }
     }

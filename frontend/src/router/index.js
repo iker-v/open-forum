@@ -21,7 +21,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/thread/:id',
+      path: '/thread/:idthread',
       name: 'ThreadView',
       component: ThreadView,
     },
