@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'post',
     'category',
     'djoser',
+    'django_filters',
     'corsheaders'
 ]
 

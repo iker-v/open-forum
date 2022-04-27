@@ -13,7 +13,7 @@ export default {
         return axios.post(`${slash}/create-thread`, formData)
     },
     getThreadList(query, numThread){
-        return axios.get(`${slash}/thread-list/${query}`)
+        return axios.get(`${slash}/thread-list/${query}/${numThread}`)
     },
     upVote(query){
         return axios.post(`${slash}/up-vote/${query}`)

@@ -28,7 +28,7 @@
                 </router-link>
             </div>
         </div>
-        <div v-if="!isLoading" class="flex flex-col py-6 gap-2.5">
+        <div class="flex flex-col py-6 gap-2.5">
             <ThreadCard
                 v-for="(thread, index) in threads"
                 :key="index"
@@ -38,7 +38,7 @@
                 <p class="text-2xl font-semibold text-gray-800">No threads have been found</p>
             </div>
         </div>
-        <div class="mt-32" v-else>
+        <div class="mt-32" v-show="isLoading">
             <SpinnerCard/>
         </div>
     </div>
@@ -59,7 +59,8 @@
                 threads: [],
                 menuTab: 0,
                 category: '',
-                numThreads: 10,
+                numThreads: 0,
+                lastThreadLegnth: 0,
                 isLoading: false,
             }
         },
@@ -68,9 +69,12 @@
                 this.isLoading = true
                 this.category = this.$route.params.category
                 thread.getThreadList(this.category, this.numThreads).then(({data}) => {
-                    console.log(data)
                     this.threads.push(...data)
-                }).finally(() => this.isLoading = false)
+                    this.lastThreadLegnth = data.length
+                }).finally(() => {
+                    this.isLoading = false
+                    this.numThreads += this.lastThreadLegnth
+                })
             },
             getMoreThreads(){
                 window.onscroll = () => {
@@ -79,7 +83,7 @@
                     let bottomOfWindow = scrollTop + innerHeight === document.documentElement.offsetHeight
 
                     if(bottomOfWindow){
-                        ThreadList()
+                        this.ThreadList()
                     }
                 }
             }

@@ -19,7 +19,7 @@ def search_thread(request, query):
     return Response(threads)
 
 @api_view(['GET'])
-def thread_list(request, category):
+def thread_list(request, category, numThreads):
 
     threads = Threads.objects.filter(
         Q(category_id=category),
@@ -40,7 +40,7 @@ def thread_list(request, category):
 		checkdown=Exists(Downvotes.objects.filter(
             Q(user_id=request.user.id) & Q(thread_id=OuterRef('uuid')
         )))
-    )
+    )[numThreads: numThreads+5]
 
     return Response(threads)
 
