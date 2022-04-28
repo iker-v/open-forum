@@ -10,9 +10,10 @@
     "test:e2e:ci": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress run'"
   },
   "dependencies": {
+    "@vee-validate/rules": "^4.5.11",
     "axios": "^0.26.1",
     "click-outside-vue3": "^4.0.1",
-    "vee-validate": "^4.5.10",
+    "vee-validate": "^4.5.8",
     "vue": "^3.2.31",
     "vue-click-outside": "^1.1.0",
     "vue-router": "^4.0.12",
